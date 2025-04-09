@@ -1,2 +1,23 @@
 /.vscode
 /csv_files
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+
+# Database dumps
+*.dump
+*.sql.gz
+*.bak
+
+# Logs
+*.log
+
+# Environment variables
+.env
+.env.local
+
+# System files
+.DS_Store
+Thumbs.db
