@@ -1,6 +1,6 @@
 # Performance Engineering
 
-Phase 3 measures query plans before accepting new indexes into the supported PostgreSQL schema.
+The supported schema uses measured PostgreSQL query plans before accepting new indexes. Phase 3 established the benchmark and promoted only the indexes supported by that evidence; `v1.0.0` preserves the benchmark as part of the release verification story.
 
 ## Benchmark workload
 
@@ -8,7 +8,7 @@ Phase 3 measures query plans before accepting new indexes into the supported Pos
 
 - 200,000 job postings;
 - 40,000 Data Analyst postings;
-- a selective remote Data Analyst cohort;
+- 10,000 remote Data Analyst postings;
 - 500 companies;
 - 20 skills;
 - 600,000 job-skill relationships;
@@ -39,19 +39,23 @@ For every query and state:
 
 The two states are measured in the same GitHub Actions job:
 
-- **baseline**: candidate Phase 3 indexes are absent;
-- **indexed**: candidate indexes are created and table statistics are refreshed with `ANALYZE`.
+- **baseline**: the two measured Data Analyst indexes are removed;
+- **indexed**: those indexes are recreated and table statistics are refreshed with `ANALYZE`.
 
-`TIMING OFF` avoids per-plan-node clock calls while preserving total execution time and actual row counts. This makes the benchmark more focused on planner behavior and buffer work.
+`TIMING OFF` avoids per-plan-node clock calls while preserving total execution time and actual row counts. This keeps the comparison focused on planner behavior, total runtime, and buffer work.
 
-## Candidate indexes
+## Accepted indexes
 
-Phase 3 initially tests two partial covering indexes:
+The benchmark promoted two partial covering indexes into `sql_load/2_create_tables.sql`:
 
-- a remote Data Analyst salary index for selective salary ranking/distribution work;
-- a Data Analyst work-mode/job index for analytical scans and job-skill joins.
+- `idx_job_postings_remote_da_salary` for selective salaried remote Data Analyst ranking workloads;
+- `idx_job_postings_da_work_mode_job` for broader Data Analyst analytical scans and joins.
 
-These are candidates, not automatically accepted schema changes. The final Phase 3 schema should retain only indexes supported by the measured evidence.
+The acceptance run showed the first index reducing the top-paying remote-job query from **19.198 ms to 0.105 ms** and shared blocks from **4,203 to 38**. The second index was selected across several analytical workloads and produced smaller but repeatable improvements.
+
+No additional skill-pair-specific index was accepted because the co-occurrence query showed negligible benefit and did not select either candidate.
+
+See [`BENCHMARK_RESULTS.md`](BENCHMARK_RESULTS.md) for the complete before/after evidence and storage cost.
 
 ## Reproduce locally
 
@@ -65,6 +69,10 @@ bash performance/run_benchmarks.sh
 
 The generated summary is written to `performance/results/performance-summary.md`.
 
+## Release verification
+
+The `Performance evidence` GitHub Actions workflow reruns the deterministic benchmark whenever analytical, schema, or performance files change in a pull request. Version `1.0.0` therefore carries committed acceptance evidence while CI remains capable of detecting material planner or benchmark regressions when those surfaces change.
+
 ## Interpretation limits
 
-Microbenchmarks are environment-dependent. Execution time varies with CPU, storage, cache state, PostgreSQL configuration, statistics, and data distribution. Phase 3 therefore uses timing as supporting evidence alongside plan shape, buffer activity, index usage, and index storage cost. The benchmark does not claim universal production latency.
+Microbenchmarks are environment-dependent. Execution time varies with CPU, storage, cache state, PostgreSQL configuration, statistics, and data distribution. Timing is therefore supporting evidence alongside plan shape, buffer activity, index usage, and index storage cost. The benchmark does not claim universal production latency.

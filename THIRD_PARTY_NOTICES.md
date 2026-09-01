@@ -39,6 +39,19 @@ Phase 3 adds repository-authored performance work:
 - benchmark-backed partial covering indexes promoted into the schema;
 - documented before/after evidence, storage costs, and rejected speculative optimization.
 
+Phase 4 adds repository-authored release/documentation work:
+
+- a Mermaid ERD of the supported physical schema;
+- a table/view/index data dictionary;
+- provenance-safe portfolio findings and interpretation guidance;
+- release version, changelog, and curated `v1.0.0` release notes;
+- GitHub generated-release-note configuration;
+- release-readiness CI that checks required documentation and prevents raw course CSVs from entering the release package.
+
+## Published upstream findings
+
+`docs/PORTFOLIO_FINDINGS.md` includes selected numeric results already published by the upstream course project for the shared 2023 dataset. They are explicitly labeled as upstream reference results and are not presented as independently generated repository-authored findings.
+
 ## Dataset boundary
 
 The original job-postings CSV dataset is not committed here. Users should obtain source data through the original course materials and comply with any terms that apply to that material. The synthetic fixtures and benchmark workload are solely for repository verification and performance testing and must not be interpreted as empirical evidence from the source dataset.
