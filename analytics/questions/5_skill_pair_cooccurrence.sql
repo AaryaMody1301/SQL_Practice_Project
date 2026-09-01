@@ -9,8 +9,9 @@ WITH skill_pairs AS (
         ROUND(AVG(left_skill.salary_year_avg))::BIGINT AS avg_salary
     FROM analytics.data_analyst_skills AS left_skill
     INNER JOIN analytics.data_analyst_skills AS right_skill
-        ON left_skill.job_id = right_skill.job_id
-        AND left_skill.skill_id < right_skill.skill_id
+        ON
+            left_skill.job_id = right_skill.job_id
+            AND left_skill.skill_id < right_skill.skill_id
     WHERE left_skill.work_mode = 'Remote'
     GROUP BY
         left_skill.skill_id,
