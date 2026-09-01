@@ -9,25 +9,30 @@ This repository began as a learning project based on Luke Barousse's public **SQ
 
 The source learning project provides the job-postings schema, course dataset, and the five foundational analysis questions around top-paying Data Analyst jobs, skills for top-paying jobs, in-demand skills, salary-associated skills, and optimal skills.
 
-## What this repository adds
+## Repository-authored additions
 
-The Phase 1 modernization adds repository-specific work including:
+Phase 1 adds:
 
-- corrected and cohort-consistent portfolio queries;
+- corrected and cohort-consistent foundational queries;
 - portable PostgreSQL schema/setup behavior;
 - client-side CSV loading without hard-coded server paths;
-- a synthetic deterministic test fixture authored for this repository;
-- reviewed expected outputs for regression testing;
-- relational data-contract assertions;
-- SQLFluff configuration;
-- PostgreSQL-backed GitHub Actions verification;
-- explicit provenance and reproducibility documentation.
+- a synthetic deterministic test fixture;
+- reviewed expected outputs and relational contracts;
+- SQLFluff and PostgreSQL-backed GitHub Actions verification.
 
-Later phases are intended to add original analytical questions and models beyond the course project.
+Phase 2 adds original work beyond the five source questions:
+
+- reusable Data Analyst posting and skill views;
+- salary quartile and median analysis;
+- remote versus onsite/hybrid salary comparison;
+- monthly posting, remote-share, and salary-coverage trends;
+- company posting concentration with window functions;
+- repeated skill-pair co-occurrence analysis;
+- analytical-view contracts, deterministic result evidence, and methodology documentation.
 
 ## Dataset boundary
 
-The original job-postings CSV dataset is not committed here. Users should obtain source data through the original course materials and comply with any terms that apply to that material. The synthetic fixture under `tests/fixtures/` is solely for repository verification and must not be interpreted as real job-market evidence.
+The original job-postings CSV dataset is not committed here. Users should obtain source data through the original course materials and comply with any terms that apply to that material. The synthetic fixture under `tests/fixtures/` is solely for repository verification and must not be interpreted as empirical evidence from the source dataset.
 
 ## Licensing boundary
 
