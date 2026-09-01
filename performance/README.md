@@ -1,6 +1,6 @@
 # Performance Engineering
 
-The supported schema uses measured PostgreSQL query plans before accepting new indexes. Phase 3 established the benchmark and promoted only the indexes supported by that evidence; Phase 4 preserves the benchmark as part of the `v1.0.0` release verification story.
+The supported schema uses measured PostgreSQL query plans before accepting new indexes. Phase 3 established the benchmark and promoted only the indexes supported by that evidence; `v1.0.0` preserves the benchmark as part of the release verification story.
 
 ## Benchmark workload
 
@@ -71,7 +71,7 @@ The generated summary is written to `performance/results/performance-summary.md`
 
 ## Release verification
 
-The `Performance evidence` GitHub Actions workflow reruns the deterministic benchmark whenever analytical, schema, or performance files change in a pull request. `v1.0.0` release notes therefore cite a committed acceptance run while CI remains capable of detecting material planner or benchmark regressions when those surfaces change.
+The `Performance evidence` GitHub Actions workflow reruns the deterministic benchmark whenever analytical, schema, or performance files change in a pull request. Version `1.0.0` therefore carries committed acceptance evidence while CI remains capable of detecting material planner or benchmark regressions when those surfaces change.
 
 ## Interpretation limits
 
