@@ -5,7 +5,7 @@
 
 A PostgreSQL analytics-engineering portfolio case study rebuilt from a SQL learning project. The repository keeps the original course questions as attributed foundations, then adds reproducible setup, correctness contracts, original analytical models/questions, measured performance engineering, and release-grade documentation.
 
-**Release target:** `v1.0.0`
+**Version:** `1.0.0`
 
 **Data period:** historical 2023 job postings
 
@@ -168,4 +168,4 @@ Raw course CSV files are not redistributed. A blanket repository license is inte
 
 ## v1.0.0 release
 
-The repository prepares release version `1.0.0` in [`VERSION`](VERSION), [`CHANGELOG.md`](CHANGELOG.md), and [`docs/RELEASE_NOTES_v1.0.0.md`](docs/RELEASE_NOTES_v1.0.0.md). The `v1.0.0` Git tag should be created only from the merged `main` commit after all release checks are green.
+Version `1.0.0` metadata lives in [`VERSION`](VERSION), [`CHANGELOG.md`](CHANGELOG.md), and [`docs/RELEASE_NOTES_v1.0.0.md`](docs/RELEASE_NOTES_v1.0.0.md). The `v1.0.0` tag is intended to identify the reviewed merged `main` commit after SQL quality, performance evidence, and release-readiness checks are green.
