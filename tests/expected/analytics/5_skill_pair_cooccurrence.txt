@@ -1,0 +1,6 @@
+SQL|Python|6|6|127500
+SQL|Tableau|4|4|128500
+Python|Tableau|4|4|128500
+SQL|Excel|2|2|129500
+Python|Excel|2|2|129500
+Tableau|Excel|2|2|129500

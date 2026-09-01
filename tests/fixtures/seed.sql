@@ -43,7 +43,11 @@ VALUES
     (112, 3, 'Data Analyst', 'Growth Data Analyst', 'Anywhere', TRUE, '2023-01-12', 119000),
     (113, 1, 'Data Analyst', 'Customer Data Analyst', 'Anywhere', TRUE, '2023-01-13', 118000),
     (114, 2, 'Data Analyst', 'Onsite Principal Analyst', 'New York, NY', FALSE, '2023-01-14', 250000),
-    (115, 3, 'Data Scientist', 'Remote Data Scientist', 'Anywhere', TRUE, '2023-01-15', 200000);
+    (115, 3, 'Data Scientist', 'Remote Data Scientist', 'Anywhere', TRUE, '2023-01-15', 200000),
+    (116, 2, 'Data Analyst', 'Onsite Analytics Lead', 'Boston, MA', FALSE, '2023-02-05', 150000),
+    (117, 3, 'Data Analyst', 'Onsite Reporting Analyst', 'Chicago, IL', FALSE, '2023-03-10', 110000),
+    (118, 1, 'Data Analyst', 'Remote Data Analyst - Salary Missing', 'Anywhere', TRUE, '2023-02-15', NULL),
+    (119, 1, 'Data Analyst', 'Remote Data Analyst - March', 'Anywhere', TRUE, '2023-03-20', 117000);
 
 INSERT INTO public.skills_job_dim (job_id, skill_id)
 SELECT job_id, 1
@@ -68,4 +72,7 @@ WHERE job_id BETWEEN 101 AND 102;
 INSERT INTO public.skills_job_dim (job_id, skill_id)
 VALUES
     (114, 2),
-    (115, 2);
+    (115, 2),
+    (116, 1),
+    (116, 2),
+    (117, 4);
