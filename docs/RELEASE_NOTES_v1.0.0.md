@@ -36,6 +36,6 @@ This repository does not redistribute the original course CSV files. The five fo
 
 Historical job-market statements refer to the source **2023** dataset and should not be presented as current-market facts.
 
-## Release procedure
+## Release integrity
 
-After the Phase 4 PR is merged and all `main` checks are green, create the Git tag `v1.0.0` from the merged `main` commit and publish a GitHub release using these notes (or GitHub-generated notes supplemented with this summary).
+The `v1.0.0` tag is intended to identify the reviewed `main` commit after SQL quality, performance evidence, and release-readiness checks are green. GitHub-generated notes may be used alongside this curated summary to surface the merged pull-request history and contributors.
