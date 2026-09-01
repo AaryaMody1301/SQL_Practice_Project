@@ -8,11 +8,13 @@ WITH skills_demand AS (
         ON j.job_id = sj.job_id
     INNER JOIN skills_dim AS s
         ON sj.skill_id = s.skill_id
-    WHERE j.job_title_short = 'Data Analyst'
+    WHERE
+        j.job_title_short = 'Data Analyst'
         AND j.job_work_from_home IS TRUE
         AND j.salary_year_avg IS NOT NULL
     GROUP BY sj.skill_id, s.skills
 ),
+
 avg_salary AS (
     SELECT
         sj.skill_id,
@@ -20,11 +22,13 @@ avg_salary AS (
     FROM job_postings_fact AS j
     INNER JOIN skills_job_dim AS sj
         ON j.job_id = sj.job_id
-    WHERE j.job_title_short = 'Data Analyst'
+    WHERE
+        j.job_title_short = 'Data Analyst'
         AND j.job_work_from_home IS TRUE
         AND j.salary_year_avg IS NOT NULL
     GROUP BY sj.skill_id
 )
+
 SELECT
     d.skill_id,
     d.skills,
