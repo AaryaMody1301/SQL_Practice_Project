@@ -1,0 +1,10 @@
+101|Data Analyst I|Anywhere||130000|2023-01-01 00:00:00|Alpha Analytics
+102|Data Analyst II|Anywhere||129000|2023-01-02 00:00:00|Beta Data
+103|Data Analyst III|Anywhere||128000|2023-01-03 00:00:00|Gamma Insights
+104|Senior Data Analyst|Anywhere||127000|2023-01-04 00:00:00|Alpha Analytics
+105|Product Data Analyst|Anywhere||126000|2023-01-05 00:00:00|Beta Data
+106|Marketing Data Analyst|Anywhere||125000|2023-01-06 00:00:00|Gamma Insights
+107|Operations Data Analyst|Anywhere||124000|2023-01-07 00:00:00|Alpha Analytics
+108|BI Data Analyst|Anywhere||123000|2023-01-08 00:00:00|Beta Data
+109|Risk Data Analyst|Anywhere||122000|2023-01-09 00:00:00|Gamma Insights
+110|Finance Data Analyst|Anywhere||121000|2023-01-10 00:00:00|Alpha Analytics

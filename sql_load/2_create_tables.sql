@@ -1,26 +1,20 @@
--- Create company_dim table with primary key
-CREATE TABLE public.company_dim
-(
-    company_id INT PRIMARY KEY,
+CREATE TABLE public.company_dim (
+    company_id INTEGER PRIMARY KEY,
     name TEXT,
     link TEXT,
     link_google TEXT,
     thumbnail TEXT
 );
 
--- Create skills_dim table with primary key
-CREATE TABLE public.skills_dim
-(
-    skill_id INT PRIMARY KEY,
-    skills TEXT,
+CREATE TABLE public.skills_dim (
+    skill_id INTEGER PRIMARY KEY,
+    skills TEXT NOT NULL,
     type TEXT
 );
 
--- Create job_postings_fact table with primary key
-CREATE TABLE public.job_postings_fact
-(
-    job_id INT PRIMARY KEY,
-    company_id INT,
+CREATE TABLE public.job_postings_fact (
+    job_id INTEGER PRIMARY KEY,
+    company_id INTEGER REFERENCES public.company_dim (company_id),
     job_title_short VARCHAR(255),
     job_title TEXT,
     job_location TEXT,
@@ -34,27 +28,14 @@ CREATE TABLE public.job_postings_fact
     job_country TEXT,
     salary_rate TEXT,
     salary_year_avg NUMERIC,
-    salary_hour_avg NUMERIC,
-    FOREIGN KEY (company_id) REFERENCES public.company_dim (company_id)
+    salary_hour_avg NUMERIC
 );
 
--- Create skills_job_dim table with a composite primary key and foreign keys
-CREATE TABLE public.skills_job_dim
-(
-    job_id INT,
-    skill_id INT,
-    PRIMARY KEY (job_id, skill_id),
-    FOREIGN KEY (job_id) REFERENCES public.job_postings_fact (job_id),
-    FOREIGN KEY (skill_id) REFERENCES public.skills_dim (skill_id)
+CREATE TABLE public.skills_job_dim (
+    job_id INTEGER REFERENCES public.job_postings_fact (job_id),
+    skill_id INTEGER REFERENCES public.skills_dim (skill_id),
+    PRIMARY KEY (job_id, skill_id)
 );
 
--- Set ownership of the tables to the postgres user
-ALTER TABLE public.company_dim OWNER to postgres;
-ALTER TABLE public.skills_dim OWNER to postgres;
-ALTER TABLE public.job_postings_fact OWNER to postgres;
-ALTER TABLE public.skills_job_dim OWNER to postgres;
-
--- Create indexes on foreign key columns for better performance
-CREATE INDEX idx_company_id ON public.job_postings_fact (company_id);
-CREATE INDEX idx_skill_id ON public.skills_job_dim (skill_id);
-CREATE INDEX idx_job_id ON public.skills_job_dim (job_id);
+CREATE INDEX idx_job_postings_company_id ON public.job_postings_fact (company_id);
+CREATE INDEX idx_skills_job_skill_id ON public.skills_job_dim (skill_id);

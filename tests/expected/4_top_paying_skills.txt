@@ -1,0 +1,4 @@
+Excel|129500
+Tableau|128500
+Python|127500
+SQL|124000

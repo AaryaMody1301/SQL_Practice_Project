@@ -1,0 +1,4 @@
+SQL|13
+Python|6
+Tableau|4
+Excel|2

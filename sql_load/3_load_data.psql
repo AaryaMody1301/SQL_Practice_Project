@@ -1,0 +1,11 @@
+\set ON_ERROR_STOP on
+
+\copy public.company_dim FROM 'csv_files/company_dim.csv' WITH (FORMAT csv, HEADER true, ENCODING 'UTF8')
+\copy public.skills_dim FROM 'csv_files/skills_dim.csv' WITH (FORMAT csv, HEADER true, ENCODING 'UTF8')
+\copy public.job_postings_fact FROM 'csv_files/job_postings_fact.csv' WITH (FORMAT csv, HEADER true, ENCODING 'UTF8')
+\copy public.skills_job_dim FROM 'csv_files/skills_job_dim.csv' WITH (FORMAT csv, HEADER true, ENCODING 'UTF8')
+
+ANALYZE public.company_dim;
+ANALYZE public.skills_dim;
+ANALYZE public.job_postings_fact;
+ANALYZE public.skills_job_dim;
