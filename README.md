@@ -5,8 +5,10 @@
 
 A PostgreSQL analytics-engineering portfolio case study rebuilt from a SQL learning project. The repository keeps the original course questions as attributed foundations, then adds reproducible setup, correctness contracts, original analytical models/questions, measured performance engineering, and release-grade documentation.
 
-**Release target:** `v1.0.0`  
-**Data period:** historical 2023 job postings  
+**Release target:** `v1.0.0`
+
+**Data period:** historical 2023 job postings
+
 **Database:** PostgreSQL 18 in CI
 
 > Historical job-market results in this repository describe the source 2023 dataset. They are not claims about the current job market.
