@@ -30,9 +30,18 @@ Phase 2 adds original work beyond the five source questions:
 - repeated skill-pair co-occurrence analysis;
 - analytical-view contracts, deterministic result evidence, and methodology documentation.
 
+Phase 3 adds repository-authored performance work:
+
+- a separate deterministic benchmark workload;
+- automated `EXPLAIN (ANALYZE, BUFFERS)` plan capture;
+- baseline versus candidate-index comparison tooling;
+- a generated performance summary for GitHub Actions;
+- benchmark-backed partial covering indexes promoted into the schema;
+- documented before/after evidence, storage costs, and rejected speculative optimization.
+
 ## Dataset boundary
 
-The original job-postings CSV dataset is not committed here. Users should obtain source data through the original course materials and comply with any terms that apply to that material. The synthetic fixture under `tests/fixtures/` is solely for repository verification and must not be interpreted as empirical evidence from the source dataset.
+The original job-postings CSV dataset is not committed here. Users should obtain source data through the original course materials and comply with any terms that apply to that material. The synthetic fixtures and benchmark workload are solely for repository verification and performance testing and must not be interpreted as empirical evidence from the source dataset.
 
 ## Licensing boundary
 
