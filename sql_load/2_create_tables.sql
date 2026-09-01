@@ -50,9 +50,9 @@ INCLUDE (
     job_posted_date
 )
 WHERE
-    job_title_short = 'Data Analyst'
-    AND job_work_from_home IS TRUE
-    AND salary_year_avg IS NOT NULL;
+job_title_short = 'Data Analyst'
+AND job_work_from_home IS TRUE
+AND salary_year_avg IS NOT NULL;
 
 CREATE INDEX idx_job_postings_da_work_mode_job
 ON public.job_postings_fact (job_work_from_home, job_id)
@@ -62,4 +62,4 @@ INCLUDE (
     salary_year_avg
 )
 WHERE
-    job_title_short = 'Data Analyst';
+job_title_short = 'Data Analyst';
