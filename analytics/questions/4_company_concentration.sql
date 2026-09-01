@@ -6,6 +6,7 @@ WITH company_counts AS (
     FROM analytics.data_analyst_postings
     GROUP BY company_id, company_name
 ),
+
 ranked AS (
     SELECT
         company_id,
