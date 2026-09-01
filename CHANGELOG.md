@@ -2,7 +2,7 @@
 
 All notable repository-authored changes are documented here. The project began as coursework; see `THIRD_PARTY_NOTICES.md` for the provenance boundary.
 
-## [1.0.0] - Pending release tag
+## [1.0.0]
 
 ### Added
 
