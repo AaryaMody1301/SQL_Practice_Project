@@ -1,5 +1,6 @@
 /.vscode
 /csv_files
+/performance/results
 
 # Database files
 *.db
