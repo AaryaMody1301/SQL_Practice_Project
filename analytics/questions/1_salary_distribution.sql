@@ -13,5 +13,6 @@ SELECT
     ))::NUMERIC)::BIGINT AS p75_salary,
     ROUND(MAX(salary_year_avg))::BIGINT AS max_salary
 FROM analytics.data_analyst_postings
-WHERE work_mode = 'Remote'
+WHERE
+    work_mode = 'Remote'
     AND salary_year_avg IS NOT NULL;
