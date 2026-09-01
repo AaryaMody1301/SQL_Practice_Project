@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - main
-      - phase-2-original-analytics
+      - phase-3-performance-engineering
   pull_request:
 
 jobs:
@@ -22,6 +22,8 @@ jobs:
           sqlfluff lint
           Project_sql
           analytics
+          performance/01_drop_candidate_indexes.sql
+          performance/02_candidate_indexes.sql
           sql_load/2_create_tables.sql
           --dialect postgres
 

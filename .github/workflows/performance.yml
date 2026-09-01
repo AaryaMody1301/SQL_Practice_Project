@@ -1,0 +1,56 @@
+name: Performance evidence
+
+on:
+  push:
+    branches:
+      - phase-3-performance-engineering
+  pull_request:
+    paths:
+      - 'Project_sql/**'
+      - 'analytics/**'
+      - 'performance/**'
+      - 'sql_load/**'
+      - '.github/workflows/performance.yml'
+  workflow_dispatch:
+
+jobs:
+  benchmark:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    services:
+      postgres:
+        image: postgres:18
+        env:
+          POSTGRES_DB: sql_course
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d sql_course"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      PGHOST: localhost
+      PGPORT: 5432
+      PGDATABASE: sql_course
+      PGUSER: postgres
+      PGPASSWORD: postgres
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.13'
+      - name: Create schema
+        run: psql -X -v ON_ERROR_STOP=1 -f sql_load/2_create_tables.sql
+      - name: Load benchmark workload
+        run: psql -X -v ON_ERROR_STOP=1 -f performance/00_seed_benchmark.sql
+      - name: Build analytics views
+        run: psql -X -v ON_ERROR_STOP=1 -f analytics/00_models.sql
+      - name: Benchmark baseline and candidate indexes
+        run: bash performance/run_benchmarks.sh
+      - name: Publish benchmark summary
+        run: |
+          cat performance/results/performance-summary.md
+          cat performance/results/performance-summary.md >> "$GITHUB_STEP_SUMMARY"
