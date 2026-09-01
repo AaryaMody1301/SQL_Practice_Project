@@ -1,34 +1,48 @@
 # SQL Practice Project
 
-A PostgreSQL analytics portfolio project that began as a SQL learning project and is being rebuilt into a reproducible analytics-engineering case study.
+[![SQL quality](https://github.com/AaryaMody1301/SQL_Practice_Project/actions/workflows/sql-quality.yml/badge.svg)](https://github.com/AaryaMody1301/SQL_Practice_Project/actions/workflows/sql-quality.yml)
+[![Performance evidence](https://github.com/AaryaMody1301/SQL_Practice_Project/actions/workflows/performance.yml/badge.svg)](https://github.com/AaryaMody1301/SQL_Practice_Project/actions/workflows/performance.yml)
 
-## Project status
+A PostgreSQL analytics-engineering portfolio case study rebuilt from a SQL learning project. The repository keeps the original course questions as attributed foundations, then adds reproducible setup, correctness contracts, original analytical models/questions, measured performance engineering, and release-grade documentation.
 
-- **Phase 1 — Trustworthy SQL Foundation:** merged. The five foundational course analyses are corrected, cohort-consistent, linted, and regression-tested in PostgreSQL.
-- **Phase 2 — Original Analytics:** merged. The repository adds reusable analytical views and five repository-authored analyses beyond the course questions.
-- **Phase 3 — Performance Engineering:** implemented on `phase-3-performance-engineering`. Query plans are benchmarked with PostgreSQL before indexes are promoted into the supported schema.
+**Release target:** `v1.0.0`  
+**Data period:** historical 2023 job postings  
+**Database:** PostgreSQL 18 in CI
 
-The older `sql_files/` directory remains as learning history. Supported analysis lives in `Project_sql/` and `analytics/`.
+> Historical job-market results in this repository describe the source 2023 dataset. They are not claims about the current job market.
 
-## Original analytics
+## Portfolio highlights
 
-Phase 2 asks five repository-authored questions:
+- Corrected and cohort-standardized five foundational Data Analyst queries.
+- Portable PostgreSQL setup using client-side psql `\copy` instead of machine-specific server paths.
+- Deterministic synthetic fixture, relational/analytical contracts, frozen expected outputs, SQLFluff, and PostgreSQL-backed GitHub Actions.
+- Two reusable analytical views at posting and posting-skill grain.
+- Five repository-authored analyses: salary distribution, remote-vs-onsite compensation, monthly hiring/salary coverage, employer concentration, and skill-pair co-occurrence.
+- Evidence-driven indexing based on `EXPLAIN (ANALYZE, BUFFERS, TIMING OFF, FORMAT JSON)` rather than generic optimization claims.
+- ERD, data dictionary, methodology, provenance-safe findings, benchmark evidence, changelog, and release notes.
 
-1. What does the reported annual salary distribution for remote Data Analysts look like beyond the mean?
-2. How do reported salaries compare between remote and onsite/hybrid Data Analyst postings?
-3. How do posting volume, remote share, salary coverage, and median salary change by month?
-4. How concentrated are Data Analyst postings across employers in the dataset?
+## Analytical model
+
+The supported analytical layer lives in `analytics/`:
+
+1. `analytics.data_analyst_postings` — one row per Data Analyst posting, with normalized work mode.
+2. `analytics.data_analyst_skills` — one row per Data Analyst posting-skill relationship.
+
+The five original analyses answer:
+
+1. What does the remote Data Analyst salary distribution look like beyond the mean?
+2. How do reported salaries compare between remote and onsite/hybrid postings?
+3. How do posting volume, remote share, salary coverage, and median salary vary by month?
+4. How concentrated are Data Analyst postings across employers?
 5. Which skills repeatedly appear together in remote Data Analyst postings?
 
-The analytical layer uses PostgreSQL quartiles/medians, filtered aggregates, window functions, cumulative concentration, and skill-pair self joins.
+See [`docs/ANALYTICS_METHODS.md`](docs/ANALYTICS_METHODS.md) for methodology and interpretation boundaries.
 
-These are historical analyses of the source course dataset, not claims about current conditions.
+## Performance evidence
 
-## Phase 3 performance evidence
+Phase 3 uses a deterministic workload with **200,000 job postings**, **40,000 Data Analyst postings**, **10,000 remote Data Analyst postings**, and **600,000 job-skill relationships**.
 
-Phase 3 adds a deterministic 200,000-posting / 600,000-job-skill benchmark and measures repository queries before and after candidate indexes with `EXPLAIN (ANALYZE, BUFFERS, TIMING OFF, FORMAT JSON)`.
-
-The acceptance benchmark on PostgreSQL 18.6 produced these median execution results:
+Median PostgreSQL 18 acceptance results:
 
 | Query | Baseline | Indexed | Improvement |
 | --- | ---: | ---: | ---: |
@@ -39,49 +53,55 @@ The acceptance benchmark on PostgreSQL 18.6 produced these median execution resu
 | Top-demanded remote skills | 49.395 ms | 45.865 ms | 7.1% |
 | Skill-pair co-occurrence | 92.232 ms | 91.361 ms | 0.9% |
 
-Two partial covering indexes were accepted because PostgreSQL selected them across the measured workloads and their storage cost was modest:
+The strongest accepted optimization reduced the top-paying remote-job query from **19.198 ms to 0.105 ms** and shared-block activity from **4,203 to 38**. No extra skill-pair-specific index was added because the measured benefit was negligible.
 
-- `idx_job_postings_remote_da_salary`
-- `idx_job_postings_da_work_mode_job`
+Full methodology and evidence:
 
-No additional skill-pair-specific index was added because the measured query did not use either candidate and showed no meaningful improvement.
+- [`performance/README.md`](performance/README.md)
+- [`performance/BENCHMARK_RESULTS.md`](performance/BENCHMARK_RESULTS.md)
 
-See `performance/BENCHMARK_RESULTS.md` for the full evidence, buffer counts, index sizes, acceptance decisions, and interpretation limits.
+## Schema documentation
+
+- [`docs/ERD.md`](docs/ERD.md) — Mermaid entity-relationship diagram.
+- [`docs/DATA_DICTIONARY.md`](docs/DATA_DICTIONARY.md) — tables, views, keys, null semantics, and supported indexes.
+- [`docs/PORTFOLIO_FINDINGS.md`](docs/PORTFOLIO_FINDINGS.md) — upstream reference findings, repository-authored analytical scope, reproducibility guidance, and repository-owned benchmark findings.
 
 ## Repository structure
 
 ```text
-Project_sql/                    verified foundational course queries
-analytics/00_models.sql         reusable Data Analyst analytical views
-analytics/questions/            repository-authored Phase 2 analyses
-performance/                    benchmark workload, runner, plans summary, and evidence
-sql_files/                      historical SQL practice exercises
-sql_load/                       PostgreSQL schema and portable CSV loader
-docs/ANALYTICS_METHODS.md       analytical methodology and interpretation limits
-tests/fixtures/                 deterministic correctness fixture
-tests/expected/                 reviewed foundational outputs
-tests/expected/analytics/       reviewed original analytics outputs
-tests/sql/                      source and analytics data contracts
-.github/workflows/              SQL correctness and performance CI
-THIRD_PARTY_NOTICES.md          learning-project and dataset provenance
+Project_sql/                     corrected foundational course analyses
+analytics/00_models.sql          reusable analytical views
+analytics/questions/             repository-authored analyses
+performance/                     deterministic benchmark and evidence
+sql_files/                       historical SQL practice exercises
+sql_load/                        PostgreSQL schema and portable CSV loader
+docs/                            ERD, dictionary, methods, findings, release notes
+tests/fixtures/                  deterministic correctness fixture
+tests/expected/                  reviewed foundational outputs
+tests/expected/analytics/        reviewed original analytics outputs
+tests/sql/                       relational and analytical contracts
+.github/workflows/               correctness, performance, release-readiness CI
+CHANGELOG.md                     v1.0.0 change history
+VERSION                          release version
+THIRD_PARTY_NOTICES.md           source/course provenance boundary
 ```
 
-## Requirements
+## Local setup
+
+Requirements:
 
 - PostgreSQL
 - `psql`
-- Python only when running SQLFluff or the performance summary script locally
+- Python only for SQLFluff or the performance summary script
 
-## Local setup with the course dataset
-
-Create a database and schema:
+Create the database and schema:
 
 ```bash
 createdb sql_course
 psql -d sql_course -v ON_ERROR_STOP=1 -f sql_load/2_create_tables.sql
 ```
 
-Place the four source CSV files under the ignored `csv_files/` directory:
+Place the four source course CSVs under the ignored `csv_files/` directory:
 
 ```text
 csv_files/company_dim.csv
@@ -90,27 +110,23 @@ csv_files/job_postings_fact.csv
 csv_files/skills_job_dim.csv
 ```
 
-Load the source data and build the analytical views:
+Load data and create analytical views:
 
 ```bash
 psql -d sql_course -f sql_load/3_load_data.psql
 psql -d sql_course -v ON_ERROR_STOP=1 -f analytics/00_models.sql
 ```
 
-Run either a foundational query or an original analysis:
+Run analyses:
 
 ```bash
 psql -d sql_course -f Project_sql/1_top_paying_jobs.sql
 psql -d sql_course -f analytics/questions/1_salary_distribution.sql
 ```
 
-The CSV loader uses psql client-side `\copy`, so paths are resolved on the client machine rather than inside the PostgreSQL server filesystem.
-
 ## Deterministic verification
 
-The correctness fixture is synthetic and belongs to this repository. It includes deliberately out-of-cohort rows, multiple months, missing salary data, and onsite postings so cohort and comparison regressions are detectable.
-
-To reproduce the database checks locally:
+The correctness fixture belongs to this repository and deliberately contains out-of-cohort rows, onsite/remote roles, multiple months, and missing salaries so analytical regressions are detectable.
 
 ```bash
 createdb sql_course_test
@@ -121,11 +137,18 @@ psql -d sql_course_test -v ON_ERROR_STOP=1 -f tests/sql/data_contracts.sql
 psql -d sql_course_test -v ON_ERROR_STOP=1 -f tests/sql/analytics_contracts.sql
 ```
 
-CI executes every file in `Project_sql/` and `analytics/questions/` and compares pipe-delimited output with reviewed expected-result files.
+CI also executes every supported foundational/original analysis and diffs its result against reviewed expected output.
+
+## SQL quality
+
+SQLFluff is pinned for reproducibility:
+
+```bash
+python -m pip install sqlfluff==4.3.0
+sqlfluff lint Project_sql analytics performance/01_drop_candidate_indexes.sql performance/02_candidate_indexes.sql sql_load/2_create_tables.sql --dialect postgres
+```
 
 ## Reproduce the performance benchmark
-
-The performance workload is separate from the correctness fixture:
 
 ```bash
 psql -d sql_course -v ON_ERROR_STOP=1 -f performance/00_seed_benchmark.sql
@@ -133,35 +156,14 @@ psql -d sql_course -v ON_ERROR_STOP=1 -f analytics/00_models.sql
 bash performance/run_benchmarks.sh
 ```
 
-The runner removes the Phase 3 indexes for a baseline, collects three warm-cache plans per query, creates the accepted candidate indexes, repeats the measurements, and writes `performance/results/performance-summary.md`.
+The runner measures baseline and candidate-index states on the same generated workload and writes `performance/results/performance-summary.md`.
 
-## SQL quality
+## Provenance and licensing boundary
 
-SQLFluff is pinned in CI and configured for PostgreSQL.
+This repository began as coursework based on Luke Barousse's **SQL for Data Analytics** project and its job-postings dataset. The source schema and five foundational questions are attributed upstream. Repository-authored work includes correctness fixes, portable setup, tests/contracts, analytical views and questions, performance benchmarking/index decisions, and release documentation.
 
-```bash
-python -m pip install sqlfluff==4.3.0
-sqlfluff lint Project_sql analytics performance/01_drop_candidate_indexes.sql performance/02_candidate_indexes.sql sql_load/2_create_tables.sql --dialect postgres
-```
+Raw course CSV files are not redistributed. A blanket repository license is intentionally not asserted over upstream material; see [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md).
 
-## Analytical methodology
+## v1.0.0 release
 
-The analytical layer keeps missing salaries as missing, reports salary coverage with time trends, uses median/quartiles to complement averages, treats remote comparisons as descriptive rather than causal, and requires repeated support before returning skill pairs.
-
-See `docs/ANALYTICS_METHODS.md` for the complete methodology and interpretation boundaries.
-
-## Performance methodology
-
-Phase 3 treats execution time as supporting evidence rather than a universal latency guarantee. Index decisions also consider planner selection, buffer activity, workload coverage, and storage cost. The benchmark is run on one deterministic workload so before/after states are directly comparable in CI.
-
-See `performance/README.md` and `performance/BENCHMARK_RESULTS.md` for details.
-
-## Provenance
-
-This repository began as coursework based on Luke Barousse's **SQL for Data Analytics** project and its job-postings dataset. The five foundational questions and source schema come from that learning material. Phase 1 adds independent correctness and verification work; Phase 2 adds original analytical questions and reusable models; Phase 3 adds repository-authored performance benchmarking and workload-driven schema optimization.
-
-See `THIRD_PARTY_NOTICES.md` for source links and the provenance boundary. Raw course CSV files are not redistributed here.
-
-## Next phase
-
-Phase 4 will focus on the portfolio release: final documentation/ERD and data dictionary, reviewed example findings, release metadata, and a clean `v1.0.0` package.
+The repository prepares release version `1.0.0` in [`VERSION`](VERSION), [`CHANGELOG.md`](CHANGELOG.md), and [`docs/RELEASE_NOTES_v1.0.0.md`](docs/RELEASE_NOTES_v1.0.0.md). The `v1.0.0` Git tag should be created only from the merged `main` commit after all release checks are green.
