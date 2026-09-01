@@ -1,0 +1,3 @@
+Alpha Analytics|7|38.89|1|38.89
+Beta Data|6|33.33|2|72.22
+Gamma Insights|5|27.78|3|100.00
