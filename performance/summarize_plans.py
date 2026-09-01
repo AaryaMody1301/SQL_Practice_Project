@@ -5,6 +5,11 @@ import statistics
 import sys
 from pathlib import Path
 
+CANDIDATE_INDEXES = {
+    "idx_job_postings_remote_da_salary",
+    "idx_job_postings_da_work_mode_job",
+}
+
 
 def load_plan(path: Path) -> dict:
     with path.open(encoding="utf-8") as handle:
@@ -39,6 +44,18 @@ def load_stage(stage_dir: Path, name: str) -> list[dict]:
 
 def format_pct(value: float) -> str:
     return f"{value:+.1f}%"
+
+
+def append_pipe_table(lines: list[str], path: Path, heading: str) -> None:
+    if not path.exists():
+        return
+    rows = [row for row in path.read_text(encoding="utf-8").splitlines() if row.strip()]
+    if not rows:
+        return
+    lines.extend(["", heading, "", "| Metric | Value |", "| --- | ---: |"])
+    for row in rows:
+        name, value = row.split("|", 1)
+        lines.append(f"| {name} | {value} |")
 
 
 def main() -> None:
@@ -84,11 +101,7 @@ def main() -> None:
         index_names: set[str] = set()
         for plan in indexed:
             index_names.update(collect_indexes(plan["Plan"]))
-        candidate_names = sorted(
-            name
-            for name in index_names
-            if name.startswith("idx_job_postings_")
-        )
+        candidate_names = sorted(index_names & CANDIDATE_INDEXES)
 
         lines.append(
             "| {name} | {baseline:.3f} | {indexed:.3f} | {change} | {base_blocks:.0f} | {idx_blocks:.0f} | {indexes} |".format(
@@ -101,6 +114,9 @@ def main() -> None:
                 indexes=", ".join(candidate_names) if candidate_names else "none",
             )
         )
+
+    workload_counts = results_dir / "workload_counts.txt"
+    append_pipe_table(lines, workload_counts, "## Benchmark workload")
 
     index_sizes = results_dir / "index_sizes.txt"
     if index_sizes.exists():
