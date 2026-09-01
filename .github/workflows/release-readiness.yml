@@ -37,7 +37,7 @@ jobs:
           done
 
           grep -Fq "## [1.0.0]" CHANGELOG.md
-          grep -Fq 'Release target:** `v1.0.0`' README.md
+          grep -Fq '**Version:** `1.0.0`' README.md
           grep -Fq 'erDiagram' docs/ERD.md
           grep -Fq 'analytics.data_analyst_postings' docs/DATA_DICTIONARY.md
           grep -Fq 'analytics.data_analyst_skills' docs/DATA_DICTIONARY.md
