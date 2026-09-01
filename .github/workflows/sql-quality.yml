@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - main
-      - phase-1-trustworthy-sql-foundation
+      - phase-2-original-analytics
   pull_request:
 
 jobs:
@@ -18,7 +18,12 @@ jobs:
       - name: Install SQLFluff
         run: python -m pip install --disable-pip-version-check sqlfluff==4.3.0
       - name: Lint portfolio SQL
-        run: sqlfluff lint Project_sql sql_load/2_create_tables.sql --dialect postgres
+        run: >-
+          sqlfluff lint
+          Project_sql
+          analytics
+          sql_load/2_create_tables.sql
+          --dialect postgres
 
   integration:
     runs-on: ubuntu-latest
@@ -48,9 +53,13 @@ jobs:
         run: psql -X -v ON_ERROR_STOP=1 -f sql_load/2_create_tables.sql
       - name: Load deterministic fixture
         run: psql -X -v ON_ERROR_STOP=1 -f tests/fixtures/seed.sql
+      - name: Build analytics views
+        run: psql -X -v ON_ERROR_STOP=1 -f analytics/00_models.sql
       - name: Validate data contracts
         run: psql -X -v ON_ERROR_STOP=1 -f tests/sql/data_contracts.sql
-      - name: Verify analytical query outputs
+      - name: Validate analytics contracts
+        run: psql -X -v ON_ERROR_STOP=1 -f tests/sql/analytics_contracts.sql
+      - name: Verify foundational query outputs
         shell: bash
         run: |
           set -euo pipefail
@@ -59,4 +68,14 @@ jobs:
             name="$(basename "$sql" .sql)"
             psql -X -v ON_ERROR_STOP=1 -At -F '|' -f "$sql" > "actual/${name}.txt"
             diff -u "tests/expected/${name}.txt" "actual/${name}.txt"
+          done
+      - name: Verify original analytics outputs
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p actual/analytics
+          for sql in analytics/questions/*.sql; do
+            name="$(basename "$sql" .sql)"
+            psql -X -v ON_ERROR_STOP=1 -At -F '|' -f "$sql" > "actual/analytics/${name}.txt"
+            diff -u "tests/expected/analytics/${name}.txt" "actual/analytics/${name}.txt"
           done
