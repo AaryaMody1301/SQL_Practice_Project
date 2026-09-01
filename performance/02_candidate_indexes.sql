@@ -7,7 +7,8 @@ INCLUDE (
     job_schedule_type,
     job_posted_date
 )
-WHERE job_title_short = 'Data Analyst'
+WHERE
+    job_title_short = 'Data Analyst'
     AND job_work_from_home IS TRUE
     AND salary_year_avg IS NOT NULL;
 
@@ -18,6 +19,7 @@ INCLUDE (
     job_posted_date,
     salary_year_avg
 )
-WHERE job_title_short = 'Data Analyst';
+WHERE
+    job_title_short = 'Data Analyst';
 
 ANALYZE public.job_postings_fact;
