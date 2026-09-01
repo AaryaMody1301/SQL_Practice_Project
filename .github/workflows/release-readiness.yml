@@ -12,6 +12,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
       - name: Validate v1.0.0 release package
         shell: bash
         run: |
@@ -45,4 +47,4 @@ jobs:
             exit 1
           fi
 
-          git diff --check HEAD^
+          git diff --check origin/main...HEAD
