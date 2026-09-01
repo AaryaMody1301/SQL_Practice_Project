@@ -37,7 +37,5 @@ CREATE TABLE public.skills_job_dim (
     PRIMARY KEY (job_id, skill_id)
 );
 
-CREATE INDEX idx_job_postings_company_id
-    ON public.job_postings_fact (company_id);
-CREATE INDEX idx_skills_job_skill_id
-    ON public.skills_job_dim (skill_id);
+CREATE INDEX idx_job_postings_company_id ON public.job_postings_fact (company_id);
+CREATE INDEX idx_skills_job_skill_id ON public.skills_job_dim (skill_id);
